@@ -1,0 +1,25 @@
+{
+  "stickmanSize": "normal",
+  "stickmanPos":{
+     "x": 20.0
+  },
+  "cloudVelocity": 3.2,
+  "platforms":[
+    {
+      "x":30,
+      "y":270,
+      "width":100
+    },
+    {
+      "x":130,
+      "y":220,
+      "width":100
+    },
+    {
+      "x":230,
+      "y":150,
+      "width":100
+    }
+  ]
+
+}

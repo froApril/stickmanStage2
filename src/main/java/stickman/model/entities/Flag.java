@@ -1,20 +1,24 @@
 package stickman.model.entities;
 
-public class Platform implements Entity {
+import stickman.model.Strategy.Strategy;
+
+public class Flag implements Entity {
+
+    private static Flag flag = null;
     private double xpos;
     private double ypos;
-    private String imagePath;
+    private String imagePath = "/flag.png";
     private double height;
     private double width;
-    private Layer layer = Layer.BACKGROUND;
+    private Layer layer = Layer.EFFECT;
+    private Strategy intersectionAlgorithm;
 
-    public Platform(double xpos, double ypos, double height
-            ,double width){
+    public Flag(double xpos,double ypos){
         this.xpos = xpos;
         this.ypos = ypos;
-        this.imagePath = "/foot_tile.png";
-        this.height = height;
-        this.width = width;
+        this.height = 15;
+        this.width = 10;
+        flag = this;
     }
 
     @Override
@@ -45,5 +49,17 @@ public class Platform implements Entity {
     @Override
     public Layer getLayer() {
         return this.layer;
+    }
+
+    public boolean collision(Entity entity,Strategy strategy){
+        this.intersectionAlgorithm = strategy;
+        return intersectionAlgorithm.intersect(entity,this);
+    }
+
+    public static Flag getFlagInstance(){
+        if(flag ==null){
+            return null;
+        }
+        return flag;
     }
 }

@@ -1,5 +1,6 @@
 package stickman.model;
 
+import stickman.model.entities.Entity;
 import stickman.model.level.Level;
 
 public interface GameEngine {

@@ -3,10 +3,7 @@ package stickman.model;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import stickman.model.entities.Cloud;
-import stickman.model.entities.Entity;
-import stickman.model.entities.Hero;
-import stickman.model.entities.Platform;
+import stickman.model.entities.*;
 import stickman.model.level.Level;
 import stickman.model.level.LevelImpl;
 
@@ -30,20 +27,22 @@ public class GameEngineImpl implements GameEngine {
     private Hero hero;
     private List<Entity>clouds;
     private List<Entity>platforms;
+    private Flag flag;
 
     private int timer=0;
 
     public GameEngineImpl(String filename){
-        JSONObject jobj  = JSON.parseObject(readJson(filename));
+        startGame(filename);
+    }
 
+    public void startGame(String filename){
+        JSONObject jobj  = JSON.parseObject(readJson(filename));
         initHero(jobj);
         initCloud(jobj);
         //test
         initPlatforms(jobj);
-
-
+        initFlag(jobj);
         initLevel(jobj);
-
     }
 
     private void initHero(JSONObject jobj){
@@ -52,7 +51,7 @@ public class GameEngineImpl implements GameEngine {
         if(temp!=null){
             this.heroPox = temp.getDouble("x");
         }
-        hero = Hero.getHeroInstance(heroPox,300,heroSize);
+        hero = new Hero(heroPox,300,heroSize);
     }
 
     private void initCloud(JSONObject jobj){
@@ -63,13 +62,19 @@ public class GameEngineImpl implements GameEngine {
 
     }
 
+    private void initFlag(JSONObject jobj){
+        JSONObject flagDetails = jobj.getJSONObject("flag");
+        flag = new Flag(flagDetails.getInteger("x")
+                ,flagDetails.getInteger("y"));
+    }
+
     private void initLevel(JSONObject jobj){
         //currently there is only basic entity in levels
         JSONArray levels = jobj.getJSONArray("levels");
         if(levels!=null){
             //todo
         }
-        currentLevel = new LevelImpl(hero,clouds,platforms);
+        currentLevel = new LevelImpl(hero,clouds,platforms,flag);
     }
     //test function
     private void initPlatforms(JSONObject jsonObject){
@@ -117,7 +122,7 @@ public class GameEngineImpl implements GameEngine {
 
     @Override
     public void startLevel() {
-
+        startGame("default.json");
     }
 
     @Override

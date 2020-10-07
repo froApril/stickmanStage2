@@ -2,6 +2,7 @@ package stickman.model.level;
 
 import stickman.model.entities.Cloud;
 import stickman.model.entities.Entity;
+import stickman.model.entities.Flag;
 import stickman.model.entities.Hero;
 
 import java.util.ArrayList;
@@ -11,11 +12,13 @@ public class LevelImpl implements Level {
     private Entity hero;
     private List<Entity> clouds;
     private List<Entity> platforms;
+    private Flag flag;
 
-    public LevelImpl(Entity hero, List<Entity> clouds,List<Entity> platforms){
+    public LevelImpl(Entity hero, List<Entity> clouds, List<Entity> platforms, Flag flag){
         this.hero = hero;
         this.clouds = clouds;
         this.platforms = platforms;
+        this.flag = flag;
     }
 
     @Override
@@ -24,8 +27,11 @@ public class LevelImpl implements Level {
         res.add(hero);
         res.addAll(clouds);
         res.addAll(platforms);
+        res.add(flag);
+
         return res;
     }
+
 
     @Override
     public double getHeight() {
@@ -76,4 +82,5 @@ public class LevelImpl implements Level {
     public double getHeroY(){
         return hero.getYPos();
     }
+
 }

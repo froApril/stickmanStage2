@@ -19,4 +19,5 @@ public interface Level {
     boolean moveLeft();
     boolean moveRight();
     boolean stopMoving();
+
 }

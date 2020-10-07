@@ -14,11 +14,13 @@ public class Hero implements Entity {
     private int jumpPeriod = 0;
     private boolean fallDown = false;
     private boolean fastEndFlag = false;
+    private double groundLevel;
+    private boolean JumpFlag = false;
 
-
-    private Hero(double xpos,double ypos,String size){
+    public Hero(double xpos,double ypos,String size){
         this.xpos = xpos;
         this.ypos = ypos;
+        this.groundLevel = ypos;
         if(size.equals("normal")){
             this.height = 25;
             this.width = 20;
@@ -27,24 +29,12 @@ public class Hero implements Entity {
             this.height =50;
             this.width = 25;
         }
+        HERO_INSTANCE = this;
 
     }
 
-    public static Hero getHeroInstance(double xpos,double ypos,String size){
-        if(HERO_INSTANCE == null){
-            synchronized (Hero.class){
-                if(HERO_INSTANCE==null){
-                    HERO_INSTANCE = new Hero(xpos,ypos,size);
-                }
-            }
-        }
-        return HERO_INSTANCE;
-    }
     public static Hero getHeroInstance(){
-        if(HERO_INSTANCE!=null){
-            return HERO_INSTANCE;
-        }
-        return getHeroInstance(20,300,"normal");
+        return HERO_INSTANCE;
     }
 
     @Override
@@ -84,6 +74,7 @@ public class Hero implements Entity {
 
     public void resetFastEnd(){
         fastEndFlag = false;
+        jumpPeriod= 0;
     }
 
     public void moveLeft(){
@@ -98,6 +89,7 @@ public class Hero implements Entity {
     }
 
     public boolean jump(){
+        JumpFlag = true;
         if(!fallDown){
             //up
             if(ypos-1>=0 && jumpPeriod+1<=jumpHeight){
@@ -112,19 +104,21 @@ public class Hero implements Entity {
         else{
             if(fastEndFlag){
                 fallDown = false;
+                JumpFlag = false;
                 resetFastEnd();
                 return false;
             }
             //down
-            if(ypos+1<=300 && jumpPeriod-1>=0){
-                jumpPeriod-=1;
+            if(ypos+1<=300){
                 ypos+=1;
                 return true;
             }
-            if(jumpPeriod==0){
+            if(ypos==groundLevel){
                 fallDown = false;
             }
         }
+        JumpFlag = false;
+        jumpPeriod = 0;
         return false;
     }
 
@@ -132,14 +126,40 @@ public class Hero implements Entity {
         this.imagePath = image;
     }
 
-    public void collisionWithPlatform(Entity entity){
+    public void fallFromCurrentStage(){
+        ypos++;
+    }
+
+    public boolean onTheGround(){
+        return ypos == groundLevel;
+    }
+
+    public boolean isJumping(){
+        return JumpFlag;
+    }
+
+
+    public boolean UpCollisionWithPlatform(Entity entity){
         double current_height = height+ypos;
         if(entity.getYPos()==current_height &&
                 (xpos>=entity.getXPos() && xpos<=entity.getXPos()+width)){
             if(fallDown){
                 jumpFastEnd();
             }
+            return true;
         }
+        return false;
+    }
+
+    public boolean UnderCollisionWithPlatform(Entity entity){
+        if(entity.getYPos()+entity.getHeight() == ypos
+                &&(xpos>=entity.getXPos() && xpos<=entity.getXPos()+width)){
+            if(!fallDown){
+                fallDown = true;
+            }
+            return true;
+        }
+        return false;
     }
 
 }

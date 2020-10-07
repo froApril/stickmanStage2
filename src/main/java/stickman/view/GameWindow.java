@@ -7,6 +7,7 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import stickman.model.entities.Entity;
 import stickman.model.GameEngine;
+import stickman.model.entities.Hero;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +65,6 @@ public class GameWindow {
         for (EntityView entityView: entityViews) {
             entityView.markForDelete();
         }
-
         double heroXPos = model.getCurrentLevel().getHeroX();
         double heroYPos = model.getCurrentLevel().getHeroY();
 
@@ -84,10 +84,10 @@ public class GameWindow {
         }
 
         yPosToChange = (yPosToChange>100)?50:0;
-
-
+        //更新背景
         backgroundDrawer.update(xViewportOffset,yPosToChange);
 
+        //更新内容
         for (Entity entity: entities) {
             boolean notFound = true;
             for (EntityView view: entityViews) {
@@ -104,11 +104,23 @@ public class GameWindow {
             }
         }
 
+        //删除内容
         for (EntityView entityView: entityViews) {
             if (entityView.isMarkedForDelete()) {
                 pane.getChildren().remove(entityView.getNode());
             }
         }
         entityViews.removeIf(EntityView::isMarkedForDelete);
+
+        //碰撞
+        Hero hero = Hero.getHeroInstance();
+        for(Entity entity : entities){
+            if(entity.equals(hero)){
+                continue;
+            }
+            else{
+                hero.collisionWithPlatform(entity);
+            }
+        }
     }
 }

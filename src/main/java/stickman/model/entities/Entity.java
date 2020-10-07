@@ -11,4 +11,5 @@ public interface Entity {
     enum Layer{
         BACKGROUND, FOREGROUND, EFFECT
     }
+
 }

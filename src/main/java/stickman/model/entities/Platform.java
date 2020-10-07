@@ -6,7 +6,7 @@ public class Platform implements Entity {
     private String imagePath;
     private double height;
     private double width;
-    private Layer layer = Layer.FOREGROUND;
+    private Layer layer = Layer.BACKGROUND;
 
     public Platform(double xpos, double ypos, double height
             ,double width){

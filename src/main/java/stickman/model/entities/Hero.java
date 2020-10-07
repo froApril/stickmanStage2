@@ -13,6 +13,7 @@ public class Hero implements Entity {
     private int jumpHeight = 100;
     private int jumpPeriod = 0;
     private boolean fallDown = false;
+    private boolean fastEndFlag = false;
 
 
     private Hero(double xpos,double ypos,String size){
@@ -38,6 +39,12 @@ public class Hero implements Entity {
             }
         }
         return HERO_INSTANCE;
+    }
+    public static Hero getHeroInstance(){
+        if(HERO_INSTANCE!=null){
+            return HERO_INSTANCE;
+        }
+        return getHeroInstance(20,300,"normal");
     }
 
     @Override
@@ -70,23 +77,32 @@ public class Hero implements Entity {
         return this.layer;
     }
 
+    public void jumpFastEnd(){
+        fastEndFlag = true;
+        jumpPeriod = 0;
+    }
+
+    public void resetFastEnd(){
+        fastEndFlag = false;
+    }
+
     public void moveLeft(){
-        if(xpos-3>=0){
-            xpos -=3;
+        if(xpos-1>=0){
+            xpos -=1;
         }
     }
     public void moveRight(){
-        if(xpos+3<=640){
-            xpos+=3;
+        if(xpos+1<=640){
+            xpos+=1;
         }
     }
 
     public boolean jump(){
         if(!fallDown){
             //up
-            if(ypos-2>=0 && jumpPeriod+2<=jumpHeight){
-                jumpPeriod+=2;
-                ypos-=2;
+            if(ypos-1>=0 && jumpPeriod+1<=jumpHeight){
+                jumpPeriod+=1;
+                ypos-=1;
             }
             else if(jumpHeight == jumpPeriod){
                 fallDown = true;
@@ -94,10 +110,15 @@ public class Hero implements Entity {
             return true;
         }
         else{
+            if(fastEndFlag){
+                fallDown = false;
+                resetFastEnd();
+                return false;
+            }
             //down
-            if(ypos+2<=300 && jumpPeriod-2>=0){
-                jumpPeriod-=2;
-                ypos+=2;
+            if(ypos+1<=300 && jumpPeriod-1>=0){
+                jumpPeriod-=1;
+                ypos+=1;
                 return true;
             }
             if(jumpPeriod==0){
@@ -109,6 +130,16 @@ public class Hero implements Entity {
 
     public void setImagePath(String image){
         this.imagePath = image;
+    }
+
+    public void collisionWithPlatform(Entity entity){
+        double current_height = height+ypos;
+        if(entity.getYPos()==current_height &&
+                (xpos>=entity.getXPos() && xpos<=entity.getXPos()+width)){
+            if(fallDown){
+                jumpFastEnd();
+            }
+        }
     }
 
 }

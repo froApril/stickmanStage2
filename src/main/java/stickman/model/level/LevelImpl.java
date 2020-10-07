@@ -76,4 +76,5 @@ public class LevelImpl implements Level {
     public double getHeroY(){
         return hero.getYPos();
     }
+
 }

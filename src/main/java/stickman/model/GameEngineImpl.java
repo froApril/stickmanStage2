@@ -16,6 +16,7 @@ public class GameEngineImpl implements GameEngine {
     private double heroPox;
     private double cloudVelocity;
     private Level currentLevel;
+    private String currentFile;
     private Level startLevel;
     private List<Level> levels;
     private boolean LeftMoveFlag;
@@ -23,6 +24,7 @@ public class GameEngineImpl implements GameEngine {
     private boolean StopFlag;
     private int faceFlag=1;
     private boolean jump = false;
+    private String nextLevelFile = "";
 
     private Hero hero;
     private List<Entity>clouds;
@@ -33,7 +35,9 @@ public class GameEngineImpl implements GameEngine {
 
     private int timer=0;
 
-    public GameEngineImpl(String filename){
+    public GameEngineImpl(String filename)
+    {
+        this.currentFile = filename;
         startGame(filename);
     }
 
@@ -41,7 +45,6 @@ public class GameEngineImpl implements GameEngine {
         JSONObject jobj  = JSON.parseObject(readJson(filename));
         initHero(jobj);
         initCloud(jobj);
-        //test
         initPlatforms(jobj);
         initFlag(jobj);
         initMushrooms(jobj);
@@ -59,31 +62,39 @@ public class GameEngineImpl implements GameEngine {
     }
 
     private void initCloud(JSONObject jobj){
+        Object temp = jobj.get("cloudVelocity");
+        if(temp==null){
+            return;
+        }
         this.cloudVelocity = jobj.getDouble("cloudVelocity");
         clouds = new ArrayList<>();
         clouds.add(new Cloud(20,80,"/cloud_1.png",40
                 ,100,Entity.Layer.EFFECT,cloudVelocity));
 
+
     }
 
     private void initFlag(JSONObject jobj){
         JSONObject flagDetails = jobj.getJSONObject("flag");
-        flag = new Flag(flagDetails.getInteger("x")
-                ,flagDetails.getInteger("y"));
+        if(flagDetails!=null){
+            flag = new Flag(flagDetails.getInteger("x")
+                    ,flagDetails.getInteger("y"));
+        }
+
     }
 
     private void initLevel(JSONObject jobj){
         //currently there is only basic entity in levels
-        JSONArray levels = jobj.getJSONArray("levels");
-        if(levels!=null){
-            //todo
-        }
+        nextLevelFile = jobj.getString("level");
         currentLevel = new LevelImpl(hero,clouds,platforms,flag,mushrooms,enemies);
     }
     //test function
     private void initPlatforms(JSONObject jsonObject){
         JSONArray platformsJA = jsonObject.getJSONArray("platforms");
         platforms = new ArrayList<>();
+        if(platformsJA==null){
+            return;
+        }
         for(int i =0; i<platformsJA.size();i++){
             JSONObject object = platformsJA.getJSONObject(i);
             int num = (int) (object.getDouble("width")/10);
@@ -99,6 +110,9 @@ public class GameEngineImpl implements GameEngine {
     private void initMushrooms(JSONObject jobj){
         mushrooms = new ArrayList<>();
         JSONArray mushroomsArray = jobj.getJSONArray("mushroom");
+        if(mushroomsArray==null){
+            return;
+        }
         for(int i =0 ;i<mushroomsArray.size();i++){
             JSONObject object = mushroomsArray.getJSONObject(i);
             mushrooms.add(new Mushroom(object.getInteger("x"),object.getInteger("y")));
@@ -108,6 +122,9 @@ public class GameEngineImpl implements GameEngine {
     private void initEnemies(JSONObject jobj){
         JSONArray enemiesJA = jobj.getJSONArray("enemy");
         enemies = new ArrayList<>();
+        if(enemiesJA==null){
+            return;
+        }
         for(int i=0;i<enemiesJA.size();i++){
             JSONObject object = enemiesJA.getJSONObject(i);
             enemies.add(new Enemy(object.getInteger("x")
@@ -147,7 +164,11 @@ public class GameEngineImpl implements GameEngine {
 
     @Override
     public void startLevel() {
-        startGame("default.json");
+        startGame(currentFile);
+    }
+
+    public void nextLevel(){
+        startGame(nextLevelFile);
     }
 
     @Override
@@ -188,7 +209,7 @@ public class GameEngineImpl implements GameEngine {
     @Override
     public void shot() {
         if(Hero.isStrength()){
-            currentLevel.shot(faceFlag);
+            currentLevel.shot(LeftMoveFlag);
         }
     }
 

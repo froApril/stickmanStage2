@@ -3,7 +3,6 @@ package stickman.model.level;
 import stickman.model.Strategy.GeneralIntersect;
 import stickman.model.entities.*;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,19 +111,17 @@ public class LevelImpl implements Level {
         return hero.getYPos();
     }
 
-    public void shot(int direction){
+    public void shot( boolean left){
         //direction = 0 left
         //direction = 1 right
-        if(direction ==0){
-            int v = -1;
+        if(left){
             Bullet bullet = new Bullet();
-            bullet.shot(hero.getXPos()-1,hero.getYPos()+8,v);
+            bullet.shot(hero.getXPos()-1,hero.getYPos()+8,-1);
             bullets.add(bullet);
         }
         else{
-            int v = 1;
             Bullet bullet = new Bullet();
-            bullet.shot(hero.getXPos()+1,hero.getYPos()+8,v);
+            bullet.shot(hero.getXPos()+1,hero.getYPos()+8,1);
             bullets.add(bullet);
         }
 
@@ -133,6 +130,34 @@ public class LevelImpl implements Level {
         for(Entity entity:list){
             bullets.remove(entity);
         }
+    }
+
+    public void checkEnemyBulletCollision(){
+        for(Entity bullet:bullets){
+            if(!bullet.getDisplay()){
+                continue;
+            }
+            for(Entity enemy: enemies){
+                if(!enemy.getDisplay()){
+                    continue;
+                }
+                if(enemy.collision(bullet,new GeneralIntersect())){
+                    bullet.destroy();
+                    enemy.destroy();
+                }
+            }
+        }
+    }
+
+    public boolean checkHeroEnemyCollision(){
+        for(Entity enemy:enemies){
+            if(enemy.getDisplay()){
+                if(enemy.collision(hero,new GeneralIntersect())){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }

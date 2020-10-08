@@ -21,8 +21,12 @@ public interface Level {
 //    boolean moveRight();
 //    boolean stopMoving();
 
-    void shot(int direction);
+    void shot(boolean left);
 
     boolean checkHeroMushroomCollision(Hero hero);
+
+    void checkEnemyBulletCollision();
+
+    boolean checkHeroEnemyCollision();
 
 }

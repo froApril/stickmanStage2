@@ -1,9 +1,6 @@
 package stickman.model.entities;
 
 import stickman.model.Strategy.Strategy;
-import stickman.model.entities.Entity;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class Hero implements Entity {
@@ -158,7 +155,7 @@ public class Hero implements Entity {
     public boolean UpCollisionWithPlatform(Entity entity){
         double current_height = height+ypos;
         if(entity.getYPos()==current_height &&
-                (xpos>=entity.getXPos() && xpos<=entity.getXPos()+width)){
+                (xpos>=entity.getXPos()-10 && xpos<=entity.getXPos()+width-10)){
             if(fallDown){
                 jumpFastEnd();
             }
@@ -169,7 +166,7 @@ public class Hero implements Entity {
 
     public boolean UnderCollisionWithPlatform(Entity entity){
         if(entity.getYPos()+entity.getHeight() == ypos
-                &&(xpos>=entity.getXPos() && xpos<=entity.getXPos()+width)){
+                &&(xpos>=entity.getXPos()-10 && xpos<=entity.getXPos()+width-10)){
             if(!fallDown){
                 fallDown = true;
             }
@@ -190,6 +187,15 @@ public class Hero implements Entity {
 
     public static void HeroReset(){
         BULLET_SWITCH = false;
+    }
+
+    @Override
+    public void destroy() {
+
+    }
+
+    public void update(){
+
     }
 
 }

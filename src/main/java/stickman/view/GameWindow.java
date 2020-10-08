@@ -26,6 +26,7 @@ public class GameWindow {
     private static final double VIEWPORT_MARGIN = 100.0;
 
     private double baseYPos;
+    private Hero hero;
 
     public GameWindow(GameEngine model, int width, int height) {
         this.model = model;
@@ -66,7 +67,7 @@ public class GameWindow {
         for (EntityView entityView: entityViews) {
             entityView.markForDelete();
         }
-        Hero hero = Hero.getHeroInstance();
+        hero = Hero.getHeroInstance();
         Flag flag = Flag.getFlagInstance();
 
         double heroXPos = model.getCurrentLevel().getHeroX();
@@ -93,6 +94,7 @@ public class GameWindow {
 
         //更新内容
         for (Entity entity: entities) {
+
             boolean notFound = true;
             for (EntityView view: entityViews) {
                 if (view.matchesEntity(entity)) {
@@ -101,6 +103,7 @@ public class GameWindow {
                         view.markForDelete();
                         continue;
                     }
+                    entity.update();
                     view.update(xViewportOffset,yPosToChange);
                     break;
                 }
@@ -116,11 +119,14 @@ public class GameWindow {
 
         //mushroom
         checkMushroom(hero);
+        //enemy
+        checkEnemy();
+        //hero
+        checkHero(entities, hero);
 
         //win
         if(flag.collision(hero,new GeneralIntersect())){
-            hero.HeroReset();
-            model.startLevel();
+            model.nextLevel();
         }
 
         //删除内容
@@ -130,7 +136,26 @@ public class GameWindow {
             }
         }
         entityViews.removeIf(EntityView::isMarkedForDelete);
+    }
 
+    private void checkMushroom(Hero hero){
+        model.getCurrentLevel().checkHeroMushroomCollision(hero);
+    }
+
+    private void checkEnemy(){
+        model.getCurrentLevel().checkEnemyBulletCollision();
+    }
+
+    private void restart(){
+        hero.HeroReset();
+        model.startLevel();
+    }
+
+    private void checkHero(List<Entity> entities, Hero hero){
+        //
+        if(model.getCurrentLevel().checkHeroEnemyCollision()){
+            restart();
+        }
         //跳跃碰撞
         boolean collisionUpFlag = false;
         for(Entity entity : entities){
@@ -146,9 +171,4 @@ public class GameWindow {
             hero.fallFromCurrentStage();
         }
     }
-
-    private void checkMushroom(Hero hero){
-        model.getCurrentLevel().checkHeroMushroomCollision(hero);
-    }
-
 }

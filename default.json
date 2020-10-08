@@ -39,6 +39,7 @@
       "image1":"/slimeBa.png",
       "image2":"/slimeBb.png"
     }
-  ]
+  ],
+  "level":"level2.json"
 
 }

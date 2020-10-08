@@ -56,6 +56,13 @@ public class Platform implements Entity {
     }
 
     @Override
+    public void destroy() {
+
+    }
+
+    public void update(){}
+
+    @Override
     public boolean collision(Entity entity, Strategy strategy) {
         return false;
     }

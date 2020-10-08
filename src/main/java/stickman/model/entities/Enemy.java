@@ -15,6 +15,7 @@ public class Enemy implements Entity {
     private double left_range;
     private double right_range;
     private int v =1;
+    private Strategy strategy;
 
     public Enemy(double xpos,double ypos,String imagePath1
             ,String imagePath2,double range){
@@ -42,6 +43,11 @@ public class Enemy implements Entity {
 
     @Override
     public double getXPos() {
+        return this.xpos;
+    }
+
+    @Override
+    public void update() {
         if(v<0 && xpos<=left_range){
             v = 1;
         }
@@ -49,7 +55,6 @@ public class Enemy implements Entity {
             v=-1;
         }
         xpos+=v*(0.5);
-        return xpos;
     }
 
     @Override
@@ -74,11 +79,16 @@ public class Enemy implements Entity {
 
     @Override
     public boolean getDisplay() {
-        return true;
+        return display;
     }
 
     @Override
     public boolean collision(Entity entity, Strategy strategy) {
-        return false;
+        this.strategy = strategy;
+        return strategy.intersect(entity,this);
+    }
+
+    public void destroy(){
+        display = false;
     }
 }

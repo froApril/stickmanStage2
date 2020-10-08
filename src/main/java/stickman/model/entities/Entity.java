@@ -10,6 +10,8 @@ public interface Entity {
     double getWidth();
     Layer getLayer();
     boolean getDisplay();
+    void destroy();
+    void update();
     boolean collision(Entity entity, Strategy strategy);
     enum Layer{
         BACKGROUND, FOREGROUND, EFFECT

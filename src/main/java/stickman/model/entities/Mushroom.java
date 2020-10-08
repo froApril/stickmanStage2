@@ -61,9 +61,15 @@ public class Mushroom implements Entity {
     public boolean collision(Entity entity, Strategy strategy){
         this.strategy = strategy;
         if(strategy.intersect(entity,this)){
-            display = false;
+            destroy();
         }
         return strategy.intersect(entity,this);
     }
+    @Override
+    public void destroy() {
+        display = false;
+    }
+
+    public void update(){}
 
 }

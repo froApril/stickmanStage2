@@ -39,15 +39,18 @@ public class Cloud implements Entity {
         return false;
     }
 
-    public double getXPos(){
-        double res = xpos;
+    @Override
+    public double getXPos() {
+        return this.xpos;
+    }
+
+    public void update(){
         if(this.cloudVelocity!=0){
             xpos+=cloudVelocity;
             if(xpos>640){
                 xpos = 0;
             }
         }
-        return res;
     }
 
     @Override
@@ -97,6 +100,10 @@ public class Cloud implements Entity {
 
     public void setLayer(Layer layer) {
         this.layer = layer;
+    }
+    @Override
+    public void destroy() {
+        display = false;
     }
 
 }

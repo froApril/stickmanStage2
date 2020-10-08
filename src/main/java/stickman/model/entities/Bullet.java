@@ -27,9 +27,6 @@ public class Bullet implements Entity {
 
     @Override
     public double getXPos() {
-        if(display){
-            move();
-        }
         return this.xpos;
     }
 
@@ -71,9 +68,20 @@ public class Bullet implements Entity {
     }
 
     public void move(){
-        xpos+=2*direction;
-        if(xpos<0 || xpos>640){
+        xpos+=direction;
+        if(xpos<0 || xpos>1000){
             display = false;
+        }
+    }
+    @Override
+    public void destroy() {
+        display =false;
+    }
+
+    @Override
+    public void update() {
+        if(display){
+            move();
         }
     }
 }

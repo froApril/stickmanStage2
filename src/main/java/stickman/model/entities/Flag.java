@@ -34,6 +34,11 @@ public class Flag implements Entity {
     }
 
     @Override
+    public void update() {
+
+    }
+
+    @Override
     public double getYPos() {
         return this.ypos;
     }
@@ -71,5 +76,10 @@ public class Flag implements Entity {
     @Override
     public boolean getDisplay() {
         return display;
+    }
+
+    @Override
+    public void destroy() {
+        display = false;
     }
 }

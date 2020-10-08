@@ -17,4 +17,6 @@ public interface GameEngine {
     void tick();
 
     void shot();
+
+    void nextLevel();
 }

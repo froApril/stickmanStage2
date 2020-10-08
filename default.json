@@ -24,6 +24,15 @@
   "flag":{
     "x": 320,
     "y": 140
-  }
+  },
+  "enemy":[
+    {
+      "x":300,
+      "y":300,
+      "range":150,
+      "image1":"/slimeBa.png",
+      "image2":"/slimeBb.png"
+    }
+  ]
 
 }

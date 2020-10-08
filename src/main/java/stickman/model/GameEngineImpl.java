@@ -28,6 +28,7 @@ public class GameEngineImpl implements GameEngine {
     private List<Entity>clouds;
     private List<Entity>platforms;
     private Flag flag;
+    private List<Entity>enemies;
 
     private int timer=0;
 
@@ -42,6 +43,8 @@ public class GameEngineImpl implements GameEngine {
         //test
         initPlatforms(jobj);
         initFlag(jobj);
+        initEnemies(jobj);
+
         initLevel(jobj);
     }
 
@@ -68,17 +71,7 @@ public class GameEngineImpl implements GameEngine {
                 ,flagDetails.getInteger("y"));
     }
 
-    private void initLevel(JSONObject jobj){
-        //currently there is only basic entity in levels
-        JSONArray levels = jobj.getJSONArray("levels");
-        if(levels!=null){
-            //todo
-        }
-        currentLevel = new LevelImpl(hero,clouds,platforms,flag);
-    }
-    //test function
     private void initPlatforms(JSONObject jsonObject){
-        jsonObject.toJSONString();
         JSONArray platformsJA = jsonObject.getJSONArray("platforms");
         platforms = new ArrayList<>();
         for(int i =0; i<platformsJA.size();i++){
@@ -91,6 +84,28 @@ public class GameEngineImpl implements GameEngine {
                         ,15));
             }
         }
+    }
+
+    private void initEnemies(JSONObject jobj){
+        JSONArray enemiesJA = jobj.getJSONArray("enemy");
+        enemies = new ArrayList<>();
+        for(int i=0;i<enemiesJA.size();i++){
+            JSONObject object = enemiesJA.getJSONObject(i);
+            enemies.add(new Enemy(object.getInteger("x")
+                    ,object.getInteger("y")
+                    ,object.getString("image1")
+                    ,object.getString("image2")
+                    ,object.getInteger("range")));
+        }
+    }
+
+    private void initLevel(JSONObject jobj){
+        //currently there is only basic entity in levels
+        JSONArray levels = jobj.getJSONArray("levels");
+        if(levels!=null){
+            //todo
+        }
+        currentLevel = new LevelImpl(hero,clouds,platforms,flag,enemies);
     }
 
     private String readJson(String filename){

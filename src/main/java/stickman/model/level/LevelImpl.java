@@ -13,12 +13,15 @@ public class LevelImpl implements Level {
     private List<Entity> clouds;
     private List<Entity> platforms;
     private Flag flag;
+    private List<Entity>enemies;
 
-    public LevelImpl(Entity hero, List<Entity> clouds, List<Entity> platforms, Flag flag){
+    public LevelImpl(Entity hero, List<Entity> clouds, List<Entity> platforms
+            , Flag flag, List<Entity>enemies){
         this.hero = hero;
         this.clouds = clouds;
         this.platforms = platforms;
         this.flag = flag;
+        this.enemies = enemies;
     }
 
     @Override
@@ -28,7 +31,7 @@ public class LevelImpl implements Level {
         res.addAll(clouds);
         res.addAll(platforms);
         res.add(flag);
-
+        res.addAll(enemies);
         return res;
     }
 
@@ -43,10 +46,10 @@ public class LevelImpl implements Level {
         return 0;
     }
 
-    @Override
-    public void tick() {
-
-    }
+//    @Override
+//    public void tick() {
+//
+//    }
 
     @Override
     public double getFloorHeight() {
@@ -58,25 +61,25 @@ public class LevelImpl implements Level {
         return hero.getXPos();
     }
 
-    @Override
-    public boolean jump() {
-        return false;
-    }
-
-    @Override
-    public boolean moveLeft() {
-        return false;
-    }
-
-    @Override
-    public boolean moveRight() {
-        return false;
-    }
-
-    @Override
-    public boolean stopMoving() {
-        return false;
-    }
+//    @Override
+//    public boolean jump() {
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean moveLeft() {
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean moveRight() {
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean stopMoving() {
+//        return false;
+//    }
 
     @Override
     public double getHeroY(){

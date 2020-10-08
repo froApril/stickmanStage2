@@ -14,15 +14,18 @@ public class LevelImpl implements Level {
     private Flag flag;
     private List<Entity> mushrooms;
     private List<Entity> bullets;
+    private List<Entity>enemies;
+
 
     public LevelImpl(Entity hero, List<Entity> clouds, List<Entity> platforms
-            , Flag flag, List<Entity> mushrooms){
+            , Flag flag, List<Entity>mushrooms, List<Entity>enemies){
         this.hero = hero;
         this.clouds = clouds;
         this.platforms = platforms;
         this.flag = flag;
         this.mushrooms = mushrooms;
         bullets = new ArrayList<>();
+        this.enemies = enemies;
     }
 
     @Override
@@ -44,6 +47,7 @@ public class LevelImpl implements Level {
             }
         }
         removeBullet(removeList);
+        res.addAll(enemies);
         return res;
     }
 
@@ -57,10 +61,10 @@ public class LevelImpl implements Level {
         return 0;
     }
 
-    @Override
-    public void tick() {
-
-    }
+//    @Override
+//    public void tick() {
+//
+//    }
 
     @Override
     public double getFloorHeight() {
@@ -72,25 +76,25 @@ public class LevelImpl implements Level {
         return hero.getXPos();
     }
 
-    @Override
-    public boolean jump() {
-        return false;
-    }
-
-    @Override
-    public boolean moveLeft() {
-        return false;
-    }
-
-    @Override
-    public boolean moveRight() {
-        return false;
-    }
-
-    @Override
-    public boolean stopMoving() {
-        return false;
-    }
+//    @Override
+//    public boolean jump() {
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean moveLeft() {
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean moveRight() {
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean stopMoving() {
+//        return false;
+//    }
 
     @Override
     public boolean checkHeroMushroomCollision(Hero hero) {

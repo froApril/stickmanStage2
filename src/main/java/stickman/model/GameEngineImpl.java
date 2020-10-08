@@ -29,6 +29,7 @@ public class GameEngineImpl implements GameEngine {
     private List<Entity>platforms;
     private Flag flag;
     private List<Entity>mushrooms;
+    private List<Entity>enemies;
 
     private int timer=0;
 
@@ -44,6 +45,7 @@ public class GameEngineImpl implements GameEngine {
         initPlatforms(jobj);
         initFlag(jobj);
         initMushrooms(jobj);
+        initEnemies(jobj);
         initLevel(jobj);
     }
 
@@ -76,11 +78,10 @@ public class GameEngineImpl implements GameEngine {
         if(levels!=null){
             //todo
         }
-        currentLevel = new LevelImpl(hero,clouds,platforms,flag,mushrooms);
+        currentLevel = new LevelImpl(hero,clouds,platforms,flag,mushrooms,enemies);
     }
     //test function
     private void initPlatforms(JSONObject jsonObject){
-        jsonObject.toJSONString();
         JSONArray platformsJA = jsonObject.getJSONArray("platforms");
         platforms = new ArrayList<>();
         for(int i =0; i<platformsJA.size();i++){
@@ -101,6 +102,19 @@ public class GameEngineImpl implements GameEngine {
         for(int i =0 ;i<mushroomsArray.size();i++){
             JSONObject object = mushroomsArray.getJSONObject(i);
             mushrooms.add(new Mushroom(object.getInteger("x"),object.getInteger("y")));
+        }
+    }
+
+    private void initEnemies(JSONObject jobj){
+        JSONArray enemiesJA = jobj.getJSONArray("enemy");
+        enemies = new ArrayList<>();
+        for(int i=0;i<enemiesJA.size();i++){
+            JSONObject object = enemiesJA.getJSONObject(i);
+            enemies.add(new Enemy(object.getInteger("x")
+                    ,object.getInteger("y")
+                    ,object.getString("image1")
+                    ,object.getString("image2")
+                    ,object.getInteger("range")));
         }
     }
 

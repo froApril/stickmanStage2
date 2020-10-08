@@ -27,8 +27,17 @@
   },
   "mushroom":[
     {
-      "x":85,
-      "y":260
+      "x": 85,
+      "y": 260
+    }
+  ],
+  "enemy":[
+    {
+      "x":300,
+      "y":305,
+      "range":150,
+      "image1":"/slimeBa.png",
+      "image2":"/slimeBb.png"
     }
   ]
 

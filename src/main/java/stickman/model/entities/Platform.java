@@ -1,10 +1,13 @@
 package stickman.model.entities;
 
+import stickman.model.Strategy.Strategy;
+
 public class Platform implements Entity {
     private double xpos;
     private double ypos;
     private String imagePath;
     private double height;
+
     private double width;
     private Layer layer = Layer.BACKGROUND;
 
@@ -45,5 +48,15 @@ public class Platform implements Entity {
     @Override
     public Layer getLayer() {
         return this.layer;
+    }
+
+    @Override
+    public boolean getDisplay() {
+        return true;
+    }
+
+    @Override
+    public boolean collision(Entity entity, Strategy strategy) {
+        return false;
     }
 }

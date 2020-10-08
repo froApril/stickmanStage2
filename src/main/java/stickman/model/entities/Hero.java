@@ -1,6 +1,10 @@
 package stickman.model.entities;
 
+import stickman.model.Strategy.Strategy;
 import stickman.model.entities.Entity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Hero implements Entity {
     private static Hero HERO_INSTANCE;
@@ -16,6 +20,9 @@ public class Hero implements Entity {
     private boolean fastEndFlag = false;
     private double groundLevel;
     private boolean JumpFlag = false;
+
+    private static boolean BULLET_SWITCH = false;
+    private List<Entity> bullets;
 
     public Hero(double xpos,double ypos,String size){
         this.xpos = xpos;
@@ -65,6 +72,11 @@ public class Hero implements Entity {
     @Override
     public Layer getLayer() {
         return this.layer;
+    }
+
+    @Override
+    public boolean getDisplay() {
+        return true;
     }
 
     public void jumpFastEnd(){
@@ -138,6 +150,10 @@ public class Hero implements Entity {
         return JumpFlag;
     }
 
+    @Override
+    public boolean collision(Entity entity, Strategy strategy) {
+        return false;
+    }
 
     public boolean UpCollisionWithPlatform(Entity entity){
         double current_height = height+ypos;
@@ -160,6 +176,20 @@ public class Hero implements Entity {
             return true;
         }
         return false;
+    }
+
+    public static void getStrength(){
+        if(!BULLET_SWITCH){
+            BULLET_SWITCH = true;
+        }
+    }
+
+    public static boolean isStrength(){
+        return BULLET_SWITCH;
+    }
+
+    public static void HeroReset(){
+        BULLET_SWITCH = false;
     }
 
 }

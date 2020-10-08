@@ -2,26 +2,26 @@ package stickman.model.entities;
 
 import stickman.model.Strategy.Strategy;
 
-public class Flag implements Entity {
-
-    private static Flag flag = null;
+public class Mushroom implements Entity {
     private double xpos;
     private double ypos;
-    private String imagePath = "/flag.png";
+    private String imagePath;
     private double height;
     private double width;
-    private Layer layer = Layer.EFFECT;
-    private Strategy intersectionAlgorithm;
+    private Layer layer;
+    Strategy strategy = null;
     private boolean display;
 
-    public Flag(double xpos,double ypos){
+    public Mushroom(double xpos, double ypos){
         this.xpos = xpos;
         this.ypos = ypos;
-        this.height = 15;
+        this.imagePath = "/mushroom.png";
+        this.height = 10;
         this.width = 10;
-        flag = this;
+        layer = Layer.BACKGROUND;
         display = true;
     }
+
 
     @Override
     public String getImagePath() {
@@ -53,23 +53,17 @@ public class Flag implements Entity {
         return this.layer;
     }
 
-    public boolean collision(Entity entity,Strategy strategy){
-        this.intersectionAlgorithm = strategy;
-        if(intersectionAlgorithm.intersect(entity,this)){
-            display = false;
-        }
-        return intersectionAlgorithm.intersect(entity,this);
-    }
-
-    public static Flag getFlagInstance(){
-        if(flag ==null){
-            return null;
-        }
-        return flag;
-    }
-
     @Override
     public boolean getDisplay() {
         return display;
     }
+
+    public boolean collision(Entity entity, Strategy strategy){
+        this.strategy = strategy;
+        if(strategy.intersect(entity,this)){
+            display = false;
+        }
+        return strategy.intersect(entity,this);
+    }
+
 }

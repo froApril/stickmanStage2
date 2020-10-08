@@ -28,6 +28,7 @@ public class GameEngineImpl implements GameEngine {
     private List<Entity>clouds;
     private List<Entity>platforms;
     private Flag flag;
+    private List<Entity>mushrooms;
 
     private int timer=0;
 
@@ -42,6 +43,7 @@ public class GameEngineImpl implements GameEngine {
         //test
         initPlatforms(jobj);
         initFlag(jobj);
+        initMushrooms(jobj);
         initLevel(jobj);
     }
 
@@ -74,7 +76,7 @@ public class GameEngineImpl implements GameEngine {
         if(levels!=null){
             //todo
         }
-        currentLevel = new LevelImpl(hero,clouds,platforms,flag);
+        currentLevel = new LevelImpl(hero,clouds,platforms,flag,mushrooms);
     }
     //test function
     private void initPlatforms(JSONObject jsonObject){
@@ -90,6 +92,15 @@ public class GameEngineImpl implements GameEngine {
                         ,15
                         ,15));
             }
+        }
+    }
+
+    private void initMushrooms(JSONObject jobj){
+        mushrooms = new ArrayList<>();
+        JSONArray mushroomsArray = jobj.getJSONArray("mushroom");
+        for(int i =0 ;i<mushroomsArray.size();i++){
+            JSONObject object = mushroomsArray.getJSONObject(i);
+            mushrooms.add(new Mushroom(object.getInteger("x"),object.getInteger("y")));
         }
     }
 
@@ -158,6 +169,13 @@ public class GameEngineImpl implements GameEngine {
         RightMoveFlag = false;
         StopFlag = true;
         return true;
+    }
+
+    @Override
+    public void shot() {
+        if(Hero.isStrength()){
+            currentLevel.shot(faceFlag);
+        }
     }
 
     @Override

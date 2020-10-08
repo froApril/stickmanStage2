@@ -15,4 +15,6 @@ public interface GameEngine {
     boolean stopMoving();
 
     void tick();
+
+    void shot();
 }

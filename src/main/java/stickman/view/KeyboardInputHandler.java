@@ -7,6 +7,7 @@ import javafx.scene.media.MediaPlayer;
 import stickman.model.GameEngine;
 
 import java.net.URL;
+import java.security.Key;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -43,6 +44,9 @@ class KeyboardInputHandler{
                 jumpPlayer.stop();
                 jumpPlayer.play();
             }
+        }
+        if(keyEvent.getCode().equals(KeyCode.SPACE)){
+            model.shot();
         }
 
         if (keyEvent.getCode().equals(KeyCode.LEFT)) {

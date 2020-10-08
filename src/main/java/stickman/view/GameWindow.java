@@ -5,7 +5,7 @@ import javafx.animation.Timeline;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
-import stickman.model.Strategy.HeroFlagIntersect;
+import stickman.model.Strategy.GeneralIntersect;
 import stickman.model.entities.Entity;
 import stickman.model.GameEngine;
 import stickman.model.entities.Flag;
@@ -23,7 +23,6 @@ public class GameWindow {
     private BackgroundDrawer backgroundDrawer;
 
     private double xViewportOffset = 0.0;
-    private double yViewportOffset = 0.0;
     private static final double VIEWPORT_MARGIN = 100.0;
 
     private double baseYPos;
@@ -98,22 +97,32 @@ public class GameWindow {
             for (EntityView view: entityViews) {
                 if (view.matchesEntity(entity)) {
                     notFound = false;
+                    if(!entity.getDisplay()){
+                        view.markForDelete();
+                        continue;
+                    }
                     view.update(xViewportOffset,yPosToChange);
                     break;
                 }
             }
             if (notFound) {
-                EntityView entityView = new EntityViewImpl(entity);
-                entityViews.add(entityView);
-                pane.getChildren().add(entityView.getNode());
+                if(entity.getDisplay()){
+                    EntityView entityView = new EntityViewImpl(entity);
+                    entityViews.add(entityView);
+                    pane.getChildren().add(entityView.getNode());
+                }
             }
         }
 
-        //win
-        if(flag.collision(hero,new HeroFlagIntersect())){
-            model.startLevel();
+        //mushroom
+        checkMushroom(hero);
 
+        //win
+        if(flag.collision(hero,new GeneralIntersect())){
+            hero.HeroReset();
+            model.startLevel();
         }
+
         //删除内容
         for (EntityView entityView: entityViews) {
             if (entityView.isMarkedForDelete()) {
@@ -122,9 +131,7 @@ public class GameWindow {
         }
         entityViews.removeIf(EntityView::isMarkedForDelete);
 
-        //碰撞
-
-
+        //跳跃碰撞
         boolean collisionUpFlag = false;
         for(Entity entity : entities){
             if(entity.equals(hero)){
@@ -135,9 +142,13 @@ public class GameWindow {
                 hero.UnderCollisionWithPlatform(entity);
             }
         }
-
         if(!collisionUpFlag && !hero.onTheGround() && !hero.isJumping()){
             hero.fallFromCurrentStage();
         }
     }
+
+    private void checkMushroom(Hero hero){
+        model.getCurrentLevel().checkHeroMushroomCollision(hero);
+    }
+
 }

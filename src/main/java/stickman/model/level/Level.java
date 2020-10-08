@@ -1,6 +1,7 @@
 package stickman.model.level;
 
 import stickman.model.entities.Entity;
+import stickman.model.entities.Hero;
 
 import java.util.List;
 
@@ -19,5 +20,9 @@ public interface Level {
     boolean moveLeft();
     boolean moveRight();
     boolean stopMoving();
+
+    void shot(int direction);
+
+    boolean checkHeroMushroomCollision(Hero hero);
 
 }

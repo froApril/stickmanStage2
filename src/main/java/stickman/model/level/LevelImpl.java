@@ -1,5 +1,7 @@
 package stickman.model.level;
 
+import stickman.model.Factory.BulletFactory;
+import stickman.model.Factory.EntityFactory;
 import stickman.model.Strategy.GeneralIntersect;
 import stickman.model.entities.*;
 
@@ -26,7 +28,6 @@ public class LevelImpl implements Level {
         this.mushrooms = mushrooms;
         bullets = new ArrayList<>();
         this.enemies = enemies;
-        this.entityFactory = new EntityFactory();
     }
 
     @Override
@@ -92,13 +93,14 @@ public class LevelImpl implements Level {
     public void shot( boolean left){
         //direction = 0 left
         //direction = 1 right
+        entityFactory = new BulletFactory();
         if(left){
-            Bullet bullet = (Bullet)entityFactory.getEntity(EntityType.BULLET);
+            Bullet bullet = (Bullet)entityFactory.getEntity();
             bullet.shot(hero.getXPos()-1,hero.getYPos()+8,-1);
             bullets.add(bullet);
         }
         else{
-            Bullet bullet = (Bullet)entityFactory.getEntity(EntityType.BULLET);
+            Bullet bullet = (Bullet)entityFactory.getEntity();
             bullet.shot(hero.getXPos()+1,hero.getYPos()+8,1);
             bullets.add(bullet);
         }

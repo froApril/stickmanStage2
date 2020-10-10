@@ -1,16 +1,17 @@
 package stickman.model.Builder;
 
-import stickman.model.entities.EntityFactory;
+import stickman.model.Factory.EntityFactory;
+import stickman.model.Factory.FlagFactory;
 import stickman.model.entities.EntityType;
 import stickman.model.entities.Flag;
 
 public class FlagBuilderImpl extends FlagBuilder {
     private Flag flag;
-    private EntityFactory entityFactory =new EntityFactory();
+    private EntityFactory entityFactory =new FlagFactory();
     double xpos;
     double ypos;
     public FlagBuilderImpl(double xpos, double ypos){
-        flag = (Flag) entityFactory.getEntity(EntityType.FLAG);
+        flag = (Flag) entityFactory.getEntity();
         this.xpos = xpos;
         this.ypos = ypos;
     }

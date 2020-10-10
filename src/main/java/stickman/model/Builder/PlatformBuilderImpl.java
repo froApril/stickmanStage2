@@ -1,17 +1,16 @@
 package stickman.model.Builder;
 
-import stickman.model.entities.Cloud;
-import stickman.model.entities.EntityFactory;
-import stickman.model.entities.EntityType;
+import stickman.model.Factory.EntityFactory;
+import stickman.model.Factory.PlatformFactory;
 import stickman.model.entities.Platform;
 
 public class PlatformBuilderImpl extends PlatformBuilder {
     private Platform platform;
-    private EntityFactory entityFactory =new EntityFactory();
+    private EntityFactory entityFactory =new PlatformFactory();
     double xpos;
     double ypos;
     public PlatformBuilderImpl(double xpos, double ypos){
-        platform= (Platform) entityFactory.getEntity(EntityType.PLATFORM);
+        platform= (Platform) entityFactory.getEntity();
         this.xpos = xpos;
         this.ypos = ypos;
     }

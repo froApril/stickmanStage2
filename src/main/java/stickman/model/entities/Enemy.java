@@ -22,17 +22,6 @@ public class Enemy implements Entity {
         layer = Layer.EFFECT;
     }
 
-    public void config(double xpos,double ypos,String imagePath1
-            ,String imagePath2,double range){
-        this.xpos = xpos;
-        this.ypos = ypos;
-        this.imagePath1 = imagePath1;
-        this.imagePath2 = imagePath2;
-        this.range = range;
-        this.left_range = xpos;
-        this.right_range = xpos+range;
-    }
-
     @Override
     public String getImagePath() {
         if(xpos %2 ==0){
@@ -125,7 +114,7 @@ public class Enemy implements Entity {
     @Override
     public boolean collision(Entity entity, Strategy strategy) {
         this.strategy = strategy;
-        return strategy.intersect(entity,this);
+        return this.strategy.intersect(entity,this);
     }
 
     public void destroy(){

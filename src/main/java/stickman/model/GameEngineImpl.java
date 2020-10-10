@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import stickman.model.Builder.*;
 import stickman.model.Director.*;
+import stickman.model.Factory.EntityFactory;
 import stickman.model.entities.*;
 import stickman.model.level.Level;
 import stickman.model.level.LevelImpl;
@@ -40,7 +41,6 @@ public class GameEngineImpl implements GameEngine {
 
     public GameEngineImpl(String filename)
     {
-        entityFactory = new EntityFactory();
         this.currentFile = filename;
         startGame(filename);
     }

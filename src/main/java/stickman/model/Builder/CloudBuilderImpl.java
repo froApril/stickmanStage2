@@ -1,17 +1,17 @@
 package stickman.model.Builder;
 
+import stickman.model.Factory.CloudFactory;
+import stickman.model.Factory.EntityFactory;
 import stickman.model.entities.Cloud;
-import stickman.model.entities.EntityFactory;
-import stickman.model.entities.EntityType;
 
 public class CloudBuilderImpl extends CloudBuilder {
     private Cloud cloud;
-    private EntityFactory entityFactory =new EntityFactory();
+    private EntityFactory entityFactory =new CloudFactory();
     double xpos;
     double ypos;
     double v;
     public CloudBuilderImpl(double xpos, double ypos,double v){
-        cloud = (Cloud) entityFactory.getEntity(EntityType.CLOUD);
+        cloud = (Cloud) entityFactory.getEntity();
         this.xpos = xpos;
         this.ypos = ypos;
         this.v = v;

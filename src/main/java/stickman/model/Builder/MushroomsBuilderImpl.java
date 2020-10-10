@@ -1,6 +1,7 @@
 package stickman.model.Builder;
 
-import stickman.model.entities.EntityFactory;
+import stickman.model.Factory.EntityFactory;
+import stickman.model.Factory.MushroomFactory;
 import stickman.model.entities.EntityType;
 import stickman.model.entities.Mushroom;
 
@@ -8,9 +9,9 @@ public class MushroomsBuilderImpl extends MushroomsBuilder {
     private Mushroom mushroom;
     double xpos;
     double ypos;
-
+    EntityFactory entityFactory = new MushroomFactory();
     public MushroomsBuilderImpl(double xpos, double ypos){
-        mushroom = (Mushroom) new EntityFactory().getEntity(EntityType.MUSHROOM);
+        mushroom = (Mushroom) entityFactory.getEntity();
         this.ypos = ypos;
         this.xpos = xpos;
     }

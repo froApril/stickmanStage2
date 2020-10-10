@@ -1,7 +1,8 @@
 package stickman.model.Builder;
 
+import stickman.model.Factory.EnemyFactory;
+import stickman.model.Factory.EntityFactory;
 import stickman.model.entities.Enemy;
-import stickman.model.entities.EntityFactory;
 import stickman.model.entities.EntityType;
 
 public class EnemyBuilderImpl extends EnemyBuilder {
@@ -13,9 +14,10 @@ public class EnemyBuilderImpl extends EnemyBuilder {
     double range;
     String image1;
     String image2;
+    EntityFactory entityFactory = new EnemyFactory();
     public EnemyBuilderImpl(double xpos,double ypos, int v
             , double range,String image1, String image2){
-        enemy = (Enemy) new EntityFactory().getEntity(EntityType.ENEMY);
+        enemy = (Enemy) entityFactory.getEntity();
         this.xpos =xpos;
         this.ypos = ypos;
         this.v = v;

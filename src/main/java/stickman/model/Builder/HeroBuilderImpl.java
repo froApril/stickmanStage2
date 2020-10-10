@@ -1,17 +1,18 @@
 package stickman.model.Builder;
 
-import stickman.model.entities.EntityFactory;
+import stickman.model.Factory.EntityFactory;
+import stickman.model.Factory.HeroFactory;
 import stickman.model.entities.EntityType;
 import stickman.model.entities.Hero;
 
 public class HeroBuilderImpl extends HeroBuilder {
     private Hero hero;
-    private EntityFactory entityFactory =new EntityFactory();
+    private EntityFactory entityFactory =new HeroFactory();
     double xpos;
     double ypos;
     String size;
     public HeroBuilderImpl(double xpos, double ypos, String size){
-        hero = (Hero) entityFactory.getEntity(EntityType.HERO);
+        hero = (Hero) entityFactory.getEntity();
         this.xpos = xpos;
         this.ypos = ypos;
         this.size = size;

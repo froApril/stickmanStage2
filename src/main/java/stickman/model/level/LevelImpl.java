@@ -14,6 +14,7 @@ public class LevelImpl implements Level {
     private List<Entity> mushrooms;
     private List<Entity> bullets;
     private List<Entity>enemies;
+    private EntityFactory entityFactory;
 
 
     public LevelImpl(Entity hero, List<Entity> clouds, List<Entity> platforms
@@ -25,6 +26,7 @@ public class LevelImpl implements Level {
         this.mushrooms = mushrooms;
         bullets = new ArrayList<>();
         this.enemies = enemies;
+        this.entityFactory = new EntityFactory();
     }
 
     @Override
@@ -60,11 +62,6 @@ public class LevelImpl implements Level {
         return 0;
     }
 
-//    @Override
-//    public void tick() {
-//
-//    }
-
     @Override
     public double getFloorHeight() {
         return 300;
@@ -75,25 +72,6 @@ public class LevelImpl implements Level {
         return hero.getXPos();
     }
 
-//    @Override
-//    public boolean jump() {
-//        return false;
-//    }
-//
-//    @Override
-//    public boolean moveLeft() {
-//        return false;
-//    }
-//
-//    @Override
-//    public boolean moveRight() {
-//        return false;
-//    }
-//
-//    @Override
-//    public boolean stopMoving() {
-//        return false;
-//    }
 
     @Override
     public boolean checkHeroMushroomCollision(Hero hero) {
@@ -115,12 +93,12 @@ public class LevelImpl implements Level {
         //direction = 0 left
         //direction = 1 right
         if(left){
-            Bullet bullet = new Bullet();
+            Bullet bullet = (Bullet)entityFactory.getEntity(EntityType.BULLET);
             bullet.shot(hero.getXPos()-1,hero.getYPos()+8,-1);
             bullets.add(bullet);
         }
         else{
-            Bullet bullet = new Bullet();
+            Bullet bullet = (Bullet)entityFactory.getEntity(EntityType.BULLET);
             bullet.shot(hero.getXPos()+1,hero.getYPos()+8,1);
             bullets.add(bullet);
         }

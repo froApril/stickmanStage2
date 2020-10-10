@@ -7,21 +7,20 @@ public class Flag implements Entity {
     private static Flag flag = null;
     private double xpos;
     private double ypos;
-    private String imagePath = "/flag.png";
+    private String imagePath;
     private double height;
     private double width;
     private Layer layer = Layer.EFFECT;
     private Strategy intersectionAlgorithm;
     private boolean display;
 
-    public Flag(double xpos,double ypos){
-        this.xpos = xpos;
-        this.ypos = ypos;
-        this.height = 15;
-        this.width = 10;
+    public Flag() {
         flag = this;
         display = true;
+        this.height = 15;
+        this.width = 10;
     }
+
 
     @Override
     public String getImagePath() {
@@ -58,7 +57,27 @@ public class Flag implements Entity {
         return this.layer;
     }
 
-    public boolean collision(Entity entity,Strategy strategy){
+    public void setXpos(double xpos) {
+        this.xpos = xpos;
+    }
+
+    public void setYpos(double ypos) {
+        this.ypos = ypos;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
+    public void setWidth(double width) {
+        this.width = width;
+    }
+
+    public boolean collision(Entity entity, Strategy strategy){
         this.intersectionAlgorithm = strategy;
         if(intersectionAlgorithm.intersect(entity,this)){
             display = false;

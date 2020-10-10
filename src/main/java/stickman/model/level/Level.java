@@ -10,16 +10,10 @@ public interface Level {
     double getHeight();
     double getWidth();
 
-//    void tick();
-
     double getFloorHeight();
     double getHeroX();
     double getHeroY();
 
-//    boolean jump();
-//    boolean moveLeft();
-//    boolean moveRight();
-//    boolean stopMoving();
 
     void shot(boolean left);
 

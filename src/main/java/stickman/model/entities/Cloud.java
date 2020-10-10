@@ -13,20 +13,9 @@ public class Cloud implements Entity {
     private double cloudVelocity;
     private boolean display;
 
-    public Cloud(double xpos, double ypos, String imagePath, double height
-            , double width, Layer layer, double cloudVelocity){
-        this.xpos = xpos;
-        this.ypos = ypos;
-        this.imagePath = imagePath;
-        this.height = height;
-        this.width = width;
-        this.layer = layer;
-        this.cloudVelocity = cloudVelocity;
-        display =true;
-    }
-
-    public double getCloudVelocity(){
-        return cloudVelocity;
+    public Cloud() {
+        this.layer = Layer.BACKGROUND;
+        display = true;
     }
 
     @Override
@@ -98,9 +87,8 @@ public class Cloud implements Entity {
         this.width = width;
     }
 
-    public void setLayer(Layer layer) {
-        this.layer = layer;
-    }
+    public void setCloudVelocity(double v){cloudVelocity = v;}
+
     @Override
     public void destroy() {
         display = false;

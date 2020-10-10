@@ -6,6 +6,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import stickman.model.Strategy.GeneralIntersect;
+import stickman.model.Strategy.PlatformUnderIntersect;
+import stickman.model.Strategy.PlatformUpIntersect;
 import stickman.model.entities.Entity;
 import stickman.model.GameEngine;
 import stickman.model.entities.Flag;
@@ -152,6 +154,7 @@ public class GameWindow {
     }
 
     private void checkHero(List<Entity> entities, Hero hero){
+//        System.out.println(hero.getYPos());
         //
         if(model.getCurrentLevel().checkHeroEnemyCollision()){
             restart();
@@ -163,8 +166,10 @@ public class GameWindow {
                 continue;
             }
             else{
-                collisionUpFlag |=  hero.UpCollisionWithPlatform(entity);
-                hero.UnderCollisionWithPlatform(entity);
+//                collisionUpFlag |=  hero.UpCollisionWithPlatform(entity);
+                collisionUpFlag |= hero.collision(entity,new PlatformUpIntersect());
+                hero.collision(entity,new PlatformUnderIntersect());
+//                hero.UnderCollisionWithPlatform(entity);
             }
         }
         if(!collisionUpFlag && !hero.onTheGround() && !hero.isJumping()){

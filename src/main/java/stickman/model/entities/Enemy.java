@@ -17,20 +17,20 @@ public class Enemy implements Entity {
     private int v =1;
     private Strategy strategy;
 
-    public Enemy(double xpos,double ypos,String imagePath1
+    public Enemy() {
+        this.display = true;
+        layer = Layer.EFFECT;
+    }
+
+    public void config(double xpos,double ypos,String imagePath1
             ,String imagePath2,double range){
         this.xpos = xpos;
         this.ypos = ypos;
-        this.display = true;
         this.imagePath1 = imagePath1;
         this.imagePath2 = imagePath2;
-        height = 20;
-        width = 20;
-        layer = Layer.EFFECT;
         this.range = range;
         this.left_range = xpos;
         this.right_range = xpos+range;
-
     }
 
     @Override
@@ -80,6 +80,46 @@ public class Enemy implements Entity {
     @Override
     public boolean getDisplay() {
         return display;
+    }
+
+    public void setXpos(double xpos) {
+        this.xpos = xpos;
+    }
+
+    public void setYpos(double ypos) {
+        this.ypos = ypos;
+    }
+
+    public void setImagePath1(String imagePath1) {
+        this.imagePath1 = imagePath1;
+    }
+
+    public void setImagePath2(String imagePath2) {
+        this.imagePath2 = imagePath2;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
+    public void setWidth(double width) {
+        this.width = width;
+    }
+
+    public void setRange(double range) {
+        this.range = range;
+    }
+
+    public void setLeft_range(double left_range) {
+        this.left_range = left_range;
+    }
+
+    public void setRight_range(double right_range) {
+        this.right_range = right_range;
+    }
+
+    public void setV(int v) {
+        this.v = v;
     }
 
     @Override

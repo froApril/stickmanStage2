@@ -1,13 +1,13 @@
 package stickman.model.entities;
 
 import stickman.model.Strategy.Strategy;
-import java.util.List;
+import stickman.model.Strategy.StrategyType;
 
 public class Hero implements Entity {
     private static Hero HERO_INSTANCE;
     private double xpos;
     private double ypos;
-    private String imagePath="/ch_stand1.png";
+    private String imagePath;
     private double height;
     private double width;
     private Layer layer = Layer.FOREGROUND;
@@ -17,24 +17,34 @@ public class Hero implements Entity {
     private boolean fastEndFlag = false;
     private double groundLevel;
     private boolean JumpFlag = false;
+    private String size;
 
     private static boolean BULLET_SWITCH = false;
-    private List<Entity> bullets;
 
-    public Hero(double xpos,double ypos,String size){
-        this.xpos = xpos;
-        this.ypos = ypos;
-        this.groundLevel = ypos;
-        if(size.equals("normal")){
-            this.height = 25;
-            this.width = 20;
-        }
-        else if(size.equals("large")){
-            this.height =50;
-            this.width = 25;
-        }
+    public Hero(){
         HERO_INSTANCE = this;
+    }
 
+    public void setXpos(double xpos) {
+        this.xpos = xpos;
+    }
+
+    public void setYpos(double ypos) {
+        this.ypos = ypos;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public void normalSize(){
+        this.height = 25;
+        this.width = 20;
+    }
+
+    public void largeSize(){
+        this.height =50;
+        this.width = 25;
     }
 
     public static Hero getHeroInstance(){
@@ -74,6 +84,10 @@ public class Hero implements Entity {
     @Override
     public boolean getDisplay() {
         return true;
+    }
+
+    public void setGroundLevel(double ypos){
+        groundLevel = ypos;
     }
 
     public void jumpFastEnd(){
@@ -135,7 +149,8 @@ public class Hero implements Entity {
         this.imagePath = image;
     }
 
-    public void fallFromCurrentStage(){
+    public void fallFromCurrentStage()
+    {
         ypos++;
     }
 
@@ -149,31 +164,18 @@ public class Hero implements Entity {
 
     @Override
     public boolean collision(Entity entity, Strategy strategy) {
-        return false;
-    }
-
-    public boolean UpCollisionWithPlatform(Entity entity){
-        double current_height = height+ypos;
-        if(entity.getYPos()==current_height &&
-                (xpos>=entity.getXPos()-10 && xpos<=entity.getXPos()+width-10)){
-            if(fallDown){
+        if(strategy.intersect(this,entity)){
+            if(fallDown && strategy.getType()== StrategyType.PLATFORM_UP){
                 jumpFastEnd();
             }
-            return true;
-        }
-        return false;
-    }
-
-    public boolean UnderCollisionWithPlatform(Entity entity){
-        if(entity.getYPos()+entity.getHeight() == ypos
-                &&(xpos>=entity.getXPos()-10 && xpos<=entity.getXPos()+width-10)){
-            if(!fallDown){
+            else if(!fallDown && strategy.getType() == StrategyType.PLATFORM_BOTTOM){
                 fallDown = true;
             }
             return true;
         }
         return false;
     }
+
 
     public static void getStrength(){
         if(!BULLET_SWITCH){
@@ -193,7 +195,6 @@ public class Hero implements Entity {
     public void destroy() {
 
     }
-
     public void update(){
 
     }

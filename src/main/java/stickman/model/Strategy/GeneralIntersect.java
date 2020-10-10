@@ -10,4 +10,9 @@ public class GeneralIntersect implements Strategy {
                 (a.getYPos() < (b.getYPos() + b.getHeight())) &&
                 ((a.getYPos() + a.getHeight()) > b.getYPos());
     }
+
+    @Override
+    public StrategyType getType() {
+        return StrategyType.GENERAL;
+    }
 }

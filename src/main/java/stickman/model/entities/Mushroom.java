@@ -12,12 +12,7 @@ public class Mushroom implements Entity {
     Strategy strategy = null;
     private boolean display;
 
-    public Mushroom(double xpos, double ypos){
-        this.xpos = xpos;
-        this.ypos = ypos;
-        this.imagePath = "/mushroom.png";
-        this.height = 10;
-        this.width = 10;
+    public Mushroom() {
         layer = Layer.BACKGROUND;
         display = true;
     }
@@ -56,6 +51,26 @@ public class Mushroom implements Entity {
     @Override
     public boolean getDisplay() {
         return display;
+    }
+
+    public void setXpos(double xpos) {
+        this.xpos = xpos;
+    }
+
+    public void setYpos(double ypos) {
+        this.ypos = ypos;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
+    public void setWidth(double width) {
+        this.width = width;
     }
 
     public boolean collision(Entity entity, Strategy strategy){

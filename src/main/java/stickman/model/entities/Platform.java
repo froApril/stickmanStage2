@@ -7,18 +7,15 @@ public class Platform implements Entity {
     private double ypos;
     private String imagePath;
     private double height;
-
+    private boolean display;
     private double width;
     private Layer layer = Layer.EFFECT;
 
-    public Platform(double xpos, double ypos, double height
-            ,double width){
-        this.xpos = xpos;
-        this.ypos = ypos;
-        this.imagePath = "/foot_tile.png";
-        this.height = height;
-        this.width = width;
+
+    public Platform() {
+        this.display = true;
     }
+
 
     @Override
     public String getImagePath() {
@@ -52,7 +49,31 @@ public class Platform implements Entity {
 
     @Override
     public boolean getDisplay() {
-        return true;
+        return display;
+    }
+
+    public void setXpos(double xpos) {
+        this.xpos = xpos;
+    }
+
+    public void setYpos(double ypos) {
+        this.ypos = ypos;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
+    public void setDisplay(boolean display) {
+        this.display = display;
+    }
+
+    public void setWidth(double width) {
+        this.width = width;
     }
 
     @Override

@@ -4,4 +4,6 @@ import stickman.model.entities.Entity;
 
 public interface Strategy {
     public boolean intersect(Entity a, Entity b);
+
+    public StrategyType getType();
 }

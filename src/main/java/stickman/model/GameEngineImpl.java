@@ -3,6 +3,8 @@ package stickman.model;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import stickman.model.Builder.*;
+import stickman.model.Director.*;
 import stickman.model.entities.*;
 import stickman.model.level.Level;
 import stickman.model.level.LevelImpl;
@@ -14,7 +16,6 @@ import java.util.List;
 public class GameEngineImpl implements GameEngine {
     private String heroSize;
     private double heroPox;
-    private double cloudVelocity;
     private Level currentLevel;
     private String currentFile;
     private Level startLevel;
@@ -25,6 +26,8 @@ public class GameEngineImpl implements GameEngine {
     private int faceFlag=1;
     private boolean jump = false;
     private String nextLevelFile = "";
+
+    private EntityFactory entityFactory;
 
     private Hero hero;
     private List<Entity>clouds;
@@ -37,6 +40,7 @@ public class GameEngineImpl implements GameEngine {
 
     public GameEngineImpl(String filename)
     {
+        entityFactory = new EntityFactory();
         this.currentFile = filename;
         startGame(filename);
     }
@@ -58,7 +62,10 @@ public class GameEngineImpl implements GameEngine {
         if(temp!=null){
             this.heroPox = temp.getDouble("x");
         }
-        hero = new Hero(heroPox,300,heroSize);
+        HeroDirector heroDirector = new HeroDirector();
+        HeroBuilder builder = new HeroBuilderImpl(heroPox,300,heroSize);
+        heroDirector.createHero(builder);
+        hero = builder.getHero();
     }
 
     private void initCloud(JSONObject jobj){
@@ -66,19 +73,24 @@ public class GameEngineImpl implements GameEngine {
         if(temp==null){
             return;
         }
-        this.cloudVelocity = jobj.getDouble("cloudVelocity");
+        double cloudVelocity = jobj.getDouble("cloudVelocity");
         clouds = new ArrayList<>();
-        clouds.add(new Cloud(20,80,"/cloud_1.png",40
-                ,100,Entity.Layer.EFFECT,cloudVelocity));
-
+        CloudDirector cloudDirector = new CloudDirector();
+        CloudBuilder builder = new CloudBuilderImpl(20,80,cloudVelocity);
+        cloudDirector.createCloud(builder);
+        clouds.add(builder.getCloud());
 
     }
 
     private void initFlag(JSONObject jobj){
         JSONObject flagDetails = jobj.getJSONObject("flag");
         if(flagDetails!=null){
-            flag = new Flag(flagDetails.getInteger("x")
+
+            FlagDirector flagDirector = new FlagDirector();
+            FlagBuilder builder = new FlagBuilderImpl(flagDetails.getInteger("x")
                     ,flagDetails.getInteger("y"));
+            flagDirector.createFlag(builder);
+            flag = builder.getFlag();
         }
 
     }
@@ -99,10 +111,12 @@ public class GameEngineImpl implements GameEngine {
             JSONObject object = platformsJA.getJSONObject(i);
             int num = (int) (object.getDouble("width")/10);
             for(int j =0;j<num;j++){
-                platforms.add(new Platform(object.getDouble("x")+j*15
-                        ,object.getDouble("y")
-                        ,15
-                        ,15));
+                PlatformDirector platformDirector = new PlatformDirector();
+                PlatformBuilder platformBuilder = new PlatformBuilderImpl(
+                        object.getDouble("x")+j*15,object.getDouble("y")
+                );
+                platformDirector.createPlatform(platformBuilder);
+                platforms.add(platformBuilder.getPlatform());
             }
         }
     }
@@ -115,7 +129,12 @@ public class GameEngineImpl implements GameEngine {
         }
         for(int i =0 ;i<mushroomsArray.size();i++){
             JSONObject object = mushroomsArray.getJSONObject(i);
-            mushrooms.add(new Mushroom(object.getInteger("x"),object.getInteger("y")));
+            MushroomDirector mushroomDirector = new MushroomDirector();
+            MushroomsBuilder mushroomsBuilder = new MushroomsBuilderImpl(
+                    object.getInteger("x"),object.getInteger("y")
+            );
+            mushroomDirector.createMushroom(mushroomsBuilder);
+            mushrooms.add(mushroomsBuilder.getMushroom());
         }
     }
 
@@ -127,11 +146,18 @@ public class GameEngineImpl implements GameEngine {
         }
         for(int i=0;i<enemiesJA.size();i++){
             JSONObject object = enemiesJA.getJSONObject(i);
-            enemies.add(new Enemy(object.getInteger("x")
+            EnemyDirector enemyDirector = new EnemyDirector();
+            EnemyBuilder enemyBuilder = new EnemyBuilderImpl(
+                    object.getInteger("x")
                     ,object.getInteger("y")
+                    ,1
+                    ,object.getInteger("range")
                     ,object.getString("image1")
                     ,object.getString("image2")
-                    ,object.getInteger("range")));
+
+            );
+            enemyDirector.createEnemy(enemyBuilder);
+            enemies.add(enemyBuilder.getEnemy());
         }
     }
 
